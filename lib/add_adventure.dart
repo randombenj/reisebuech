@@ -10,16 +10,18 @@ class AddAdventure extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Adventure Name',
-            ),
-            style: TextStyle(
-                fontSize: 20.0,
-                height: 2.0,
-                color: Colors.black
-              )
+          Padding(
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+            child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Adventure Name',
+                ),
+                style: TextStyle(
+                  fontSize: 20.0,
+                  height: 2.0,
+                  color: Colors.black
+                )
+            )
           )
         ]
       ),
