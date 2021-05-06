@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:reisebuech/add_adventure.dart';
 
 void main() {
@@ -72,28 +74,59 @@ class _MyHomePageState extends State<MyHomePage> {
       //),
       body: Container(
         margin: const EdgeInsets.only(top: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Card(
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  ListTile(
-                    title: const Text(
-                      'Reis Eis',
-                      style: TextStyle(fontWeight: FontWeight.bold)
+        child:  SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  // here
+                  height: (MediaQuery.of(context).size.height),
+                  child: FlutterMap(
+                    options: MapOptions(
+                      center: LatLng(51.5, -0.09),
+                      zoom: 13.0,
                     ),
-                    subtitle: Text(
-                      '1.1.20 - 7.1.20',
-                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                    ),
+                    layers: [
+                      TileLayerOptions(
+                        urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+                        subdomains: ['a', 'b', 'c']
+                      ),
+                      MarkerLayerOptions(
+                        markers: [
+                          Marker(
+                            width: 80.0,
+                            height: 80.0,
+                            point: LatLng(51.5, -0.09),
+                            builder: (ctx) =>
+                            Container(
+                              child: FlutterLogo(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  Image.network("https://www.auslandsjob.de/wp-content/uploads/england-auslandsjob.jpg"),
-                ],
               ),
-            ),
-          ],
+              Card(
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: const Text(
+                        'Reis Eis',
+                        style: TextStyle(fontWeight: FontWeight.bold)
+                      ),
+                      subtitle: Text(
+                        '1.1.20 - 7.1.20',
+                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                      ),
+                    ),
+                    Image.network("https://www.auslandsjob.de/wp-content/uploads/england-auslandsjob.jpg"),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
