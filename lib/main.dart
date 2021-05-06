@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -46,7 +47,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -58,6 +59,21 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+  AnimationController _controller;
+
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,33 +95,59 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                  // here
                   height: (MediaQuery.of(context).size.height),
-                  child: FlutterMap(
-                    options: MapOptions(
-                      center: LatLng(51.5, -0.09),
-                      zoom: 13.0,
-                    ),
-                    layers: [
-                      TileLayerOptions(
-                        urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-                        subdomains: ['a', 'b', 'c']
-                      ),
-                      MarkerLayerOptions(
-                        markers: [
-                          Marker(
-                            width: 80.0,
-                            height: 80.0,
-                            point: LatLng(51.5, -0.09),
-                            builder: (ctx) =>
-                            Container(
-                              child: FlutterLogo(),
-                            ),
+                  child: new Stack(
+                  children: <Widget>[
+                    Positioned(
+                      left: 0.0,
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height),
+                        width: (MediaQuery.of(context).size.width),
+                        child: FlutterMap(
+                          options: MapOptions(
+                            center: LatLng(51.5, -0.09),
+                            zoom: 2.0,
                           ),
-                        ],
+                          layers: [
+                            TileLayerOptions(
+                              urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+                              subdomains: ['a', 'b', 'c']
+                            ),
+                            MarkerLayerOptions(
+                              markers: [
+                                Marker(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  point: LatLng(51.5, -0.09),
+                                  builder: (ctx) =>
+                                  Container(
+                                    child: FlutterLogo(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                      width: (MediaQuery.of(context).size.width),
+                      bottom: 36.0,
+                      child: Center(
+                        child: AnimatedBuilder(
+                          animation: _controller,
+                          child: Icon(Icons.arrow_downward, size: 36.0, color: Colors.white),
+                          builder: (BuildContext context, Widget child) {
+                            return Transform.translate(
+                              offset: Offset(0.0, _controller.value * 10),
+                              child: child
+                            );
+                          }
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Card(
                 clipBehavior: Clip.antiAlias,
