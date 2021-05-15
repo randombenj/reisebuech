@@ -6,6 +6,8 @@ import 'package:reisebuech/add_adventure.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'adventure_cars.dart';
 void main() {
   runApp(MyApp());
 }
@@ -155,24 +157,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              Card(
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: const Text(
-                        'Reis Eis',
-                        style: TextStyle(fontWeight: FontWeight.bold)
-                      ),
-                      subtitle: Text(
-                        '1.1.20 - 7.1.20',
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                      ),
-                    ),
-                    Image.network("https://www.auslandsjob.de/wp-content/uploads/england-auslandsjob.jpg"),
-                  ],
-                ),
-              ),
+              AdventureCards(),
+              
             ],
           ),
         ),
