@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "426622170103",
+    "firebase_url": "https://reisebuech-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "reisebuech",
+    "storage_bucket": "reisebuech.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426622170103:android:8ba7d2b260f664713374f2",
+        "android_client_info": {
+          "package_name": "com.example.reisebuech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426622170103-qej8f9gc2ugn359fl3oo4gios76pmfp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC32BFt8oG4QWy7oFIhEBrDpVEk3pZ0R8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426622170103-qej8f9gc2ugn359fl3oo4gios76pmfp6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
