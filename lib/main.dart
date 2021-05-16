@@ -6,8 +6,8 @@ import 'package:reisebuech/add_adventure.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'adventure_cars.dart';
+
+import 'adventure_cards.dart';
 void main() {
   runApp(MyApp());
 }
@@ -177,6 +177,4 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 }
 
-Future<List<AssetEntity>> pickImage(BuildContext context) async {
-  return AssetPicker.pickAssets(context, textDelegate: EnglishTextDelegate());
-}
+
