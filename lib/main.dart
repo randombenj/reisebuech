@@ -1,12 +1,12 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong/latlong.dart' as latlong;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:reisebuech/add_adventure.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'adventure_cars.dart';
 void main() {
   runApp(MyApp());
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         width: (MediaQuery.of(context).size.width),
                         child: FlutterMap(
                           options: MapOptions(
-                            center: LatLng(51.5, -0.09),
+                            center: latlong.LatLng(51.5, -0.09),
                             zoom: 2.0,
                           ),
                           layers: [
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 Marker(
                                   width: 80.0,
                                   height: 80.0,
-                                  point: LatLng(51.5, -0.09),
+                                  point: latlong.LatLng(51.5, -0.09),
                                   builder: (ctx) =>
                                   Container(
                                     child: FlutterLogo(),
@@ -175,4 +175,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+Future<List<AssetEntity>> pickImage(BuildContext context) async {
+  return AssetPicker.pickAssets(context, textDelegate: EnglishTextDelegate());
 }
