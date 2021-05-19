@@ -26,7 +26,7 @@ class _AdventureCardsState extends State<AdventureCards> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Adventure(adventure)),
+                            builder: (context) => Adventure(adventure.reference)),
                       );
                     },
                     child: Card(
