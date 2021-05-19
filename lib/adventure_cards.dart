@@ -53,22 +53,3 @@ class _AdventureCardsState extends State<AdventureCards> {
         });
   }
 }
-
-//   CollectionReference adventures =
-//       FirebaseFirestore.instance.collection('adventures');
-
-//   return FutureBuilder<QuerySnapshot>(
-//     future: adventures.get(),
-//     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//       if (snapshot.connectionState == ConnectionState.done) {
-//         return actual_build(context, snapshot.data);
-//       }
-
-//       return Text("loading");
-//     },
-//   );
-// }
-
-// Widget actual_build(BuildContext context, QuerySnapshot<Object> data) {
-
-// }
