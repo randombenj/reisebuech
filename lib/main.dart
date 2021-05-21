@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ReiseBuech',
       theme: ThemeData(
-        primarySwatch: white,
+         buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
+            accentColor: Colors.black,
+            primaryColor: Colors.black
       ),
       home: MyHomePage(title: 'Saletti Flutter'),
     );

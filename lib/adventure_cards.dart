@@ -30,6 +30,7 @@ class _AdventureCardsState extends State<AdventureCards> {
                       );
                     },
                     child: Card(
+                      color: Color(a['color']),
                       clipBehavior: Clip.antiAlias,
                       child: Column(
                         children: [
