@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:reisebuech/adventure.dart';
 
 class AdventureCards extends StatefulWidget {
@@ -38,7 +39,8 @@ class _AdventureCardsState extends State<AdventureCards> {
                             title: Text(a['name'],
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text(
-                              '1.1.20 - 7.1.20',
+                              DateFormat('dd.MM.yyyy').format((a['start']as Timestamp).toDate()) + " - " +DateFormat('dd.MM.yyyy').format((a['end']as Timestamp).toDate()),
+                             
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.6)),
                             ),
