@@ -22,45 +22,47 @@ class _AdventureState extends State<Adventure> {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection('adventures')
-            .doc(widget.adventure.id)
-            .snapshots(),
+          .collection('adventures')
+          .doc(widget.adventure.id)
+          .snapshots(),
         builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          return Scaffold(
-            body: Container(
-              child: Column(
-              children: [
-                Padding(
-                  child: Text(snapshot.data['name'],
-                      style: TextStyle(fontSize: 50)),
-                  padding: EdgeInsets.all(10),
-                ),
-                Feed(widget.adventure),
-              ],
-            )),
-            floatingActionButton: Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                FloatingActionButton(
-                  child: Icon(Icons.camera),
-                  onPressed: () {
-                    pickImage(context);
-                  },
-                ),
-                FloatingActionButton(
-                  child: Icon(Icons.text_fields),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddText(widget.adventure)),
-                    );
-                  },
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                  children: [
+                    Padding(
+                      child: Text(snapshot.data['name'],
+                          style: TextStyle(fontSize: 50)),
+                      padding: EdgeInsets.all(10),
+                    ),
+                    Feed(widget.adventure),
+                  ],
                 )
-              ],
-            ),
-          );
+              )),
+              floatingActionButton: Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  FloatingActionButton(
+                    child: Icon(Icons.camera),
+                    onPressed: () {
+                      pickImage(context);
+                    },
+                  ),
+                  FloatingActionButton(
+                    child: Icon(Icons.text_fields),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddText(widget.adventure)),
+                      );
+                    },
+                  )
+                ],
+              ),
+            );
         });
   }
 
@@ -80,7 +82,7 @@ class _AdventureState extends State<Adventure> {
   }
 
   Future addImageToDb(
-      Future<TaskSnapshot> image, AssetEntity originalFile) async {
+    Future<TaskSnapshot> image, AssetEntity originalFile) async {
     String url = await (await image).ref.getDownloadURL();
     LatLng ll = await originalFile.latlngAsync();
     widget.adventure.collection('posts').add({
