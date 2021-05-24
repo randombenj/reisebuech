@@ -8,6 +8,8 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:uuid/uuid.dart';
 
+import 'feed.dart';
+
 class Adventure extends StatefulWidget {
   @override
   _AdventureState createState() => _AdventureState();
@@ -27,13 +29,14 @@ class _AdventureState extends State<Adventure> {
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           return Scaffold(
             body: Container(
-                child: Column(
+              child: Column(
               children: [
                 Padding(
                   child: Text(snapshot.data['name'],
                       style: TextStyle(fontSize: 50)),
                   padding: EdgeInsets.all(10),
                 ),
+                Feed(widget.adventure),
               ],
             )),
             floatingActionButton: Row(
@@ -50,7 +53,8 @@ class _AdventureState extends State<Adventure> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddText()),
+                      MaterialPageRoute(
+                          builder: (context) => AddText(widget.adventure)),
                     );
                   },
                 )
@@ -79,7 +83,8 @@ class _AdventureState extends State<Adventure> {
       Future<TaskSnapshot> image, AssetEntity originalFile) async {
     String url = await (await image).ref.getDownloadURL();
     LatLng ll = await originalFile.latlngAsync();
-    widget.adventure.collection('images').add({
+    widget.adventure.collection('posts').add({
+      'type': 'image',
       'file': url,
       'original-name': originalFile.title,
       'lat': ll.latitude,
