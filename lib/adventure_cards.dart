@@ -10,7 +10,7 @@ class AdventureCards extends StatefulWidget {
 
 class _AdventureCardsState extends State<AdventureCards> {
   final Stream<QuerySnapshot> _adventuresStream =
-      FirebaseFirestore.instance.collection('adventures').snapshots();
+      FirebaseFirestore.instance.collection('adventures').orderBy("end", descending: true).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,6 @@ class _AdventureCardsState extends State<AdventureCards> {
                               .snapshots(),
                             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (snapshot.data == null || (snapshot.data != null && snapshot.data.docs.length == 0)) {
-                                debugPrint("Length ${snapshot.data.docs.length}");
                                 return Column();
                               }
                               return Image.network(snapshot.data.docs[0]['file']);

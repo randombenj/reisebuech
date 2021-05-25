@@ -36,7 +36,7 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: widget.adventure.collection('posts').snapshots(),
+      stream: widget.adventure.collection('posts').orderBy("time", descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
         if (snapshot.connectionState == ConnectionState.none || snapshot.connectionState == ConnectionState.waiting) {
@@ -80,11 +80,11 @@ class _FeedState extends State<Feed> {
               child: FlutterMap(
                 options: MapOptions(
                   center: center,
-                  zoom: 8.0,
+                  zoom: 9.0,
                 ),
                 layers: [
                   TileLayerOptions(
-                    urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+                    urlTemplate: "http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
                     subdomains: ['a', 'b', 'c']
                   ),
                   MarkerLayerOptions(

@@ -12,6 +12,7 @@ class AddText extends StatefulWidget {
 class _AddTextState extends State<AddText> {
   TextEditingController titleController = new TextEditingController();
   TextEditingController textController = new TextEditingController();
+  DateTime date = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +20,7 @@ class _AddTextState extends State<AddText> {
         title: Text("Adventure Title"),
       ),
       body: Container(
-        child: Column(
+        child: Padding(child: Column(
           children: [
             Text("test"),
             TextField(
@@ -43,20 +44,25 @@ class _AddTextState extends State<AddText> {
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
-                    lastDate: DateTime.now());
+                    lastDate: DateTime.now()).then((value) {
+                      setState(() {
+                        date = value;
+                      });
+                    });
               },
               child: Text("Date"),
             )
           ],
         ),
-      ),
+       padding: EdgeInsets.only(left: 8.0, right: 8.0))),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () {
           widget.adventure.collection('posts').add({
             'type': 'text',
             'title': titleController.text,
-            'text': textController.text
+            'text': textController.text,
+            'time': date.toUtc()
           });
           Navigator.pop(context);
         },

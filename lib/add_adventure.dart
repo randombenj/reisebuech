@@ -35,7 +35,7 @@ class _AddAdventureState extends State<AddAdventure> {
                 style:
                     TextStyle(fontSize: 20.0, height: 2.0, color: Colors.black),
               )),
-          Row(children: [
+          Padding(child: Row(children: [
             Text("Date of your adventure: "),
             Text(dateText),
             TextButton(
@@ -57,8 +57,8 @@ class _AddAdventureState extends State<AddAdventure> {
               },
               child: Text("change"),
             )
-          ]),
-          Row(
+          ]), padding: EdgeInsets.only(left: 8.0, right: 8.0)),
+          Padding(child: Row(
             children: [
               Text("Color: "),
               TextButton(
@@ -73,9 +73,8 @@ class _AddAdventureState extends State<AddAdventure> {
                   },
                   child: Text("Change the color of your adventure!"))
             ],
-          )
-        ],
-      ),
+          ), padding: EdgeInsets.only(left: 8.0, right: 8.0))
+        ],),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           adventures.add({

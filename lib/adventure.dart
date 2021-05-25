@@ -115,6 +115,7 @@ class _AdventureState extends State<Adventure> {
       'original-name': originalFile.title,
       'lat': ll.latitude,
       'lng': ll.longitude,
+      'time': DateTime.now().toUtc()//originalFile.createDateTime.toUtc()
     });
   }
 }

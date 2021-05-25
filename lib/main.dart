@@ -105,63 +105,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Image.asset("assets/adventure.png"),
-              /*Container(
-                  height: (MediaQuery.of(context).size.height),
-                  child: new Stack(
-                  children: <Widget>[
-                    Positioned(
-                      left: 0.0,
-                      child: Container(
-                        height: (MediaQuery.of(context).size.height),
-                        width: (MediaQuery.of(context).size.width),
-                        child: FlutterMap(
-                          options: MapOptions(
-                            center: latlong.LatLng(51.5, -0.09),
-                            zoom: 2.0,
-                          ),
-                          layers: [
-                            TileLayerOptions(
-                              urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-                              subdomains: ['a', 'b', 'c']
-                            ),
-                            MarkerLayerOptions(
-                              markers: [
-                                Marker(
-                                  width: 80.0,
-                                  height: 80.0,
-                                  point: latlong.LatLng(51.5, -0.09),
-                                  builder: (ctx) =>
-                                  Container(
-                                    child: FlutterLogo(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      width: (MediaQuery.of(context).size.width),
-                      bottom: 36.0,
-                      child: Center(
-                        child: AnimatedBuilder(
-                          animation: _controller,
-                          child: Icon(Icons.arrow_downward, size: 36.0, color: Colors.white),
-                          builder: (BuildContext context, Widget child) {
-                            return Transform.translate(
-                              offset: Offset(0.0, _controller.value * 10),
-                              child: child
-                            );
-                          }
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
               AdventureCards(),
-
             ],
           ),
         ),
