@@ -96,6 +96,7 @@ class _FeedState extends State<Feed> {
         }
 
         int count = 0;
+        List<String> images = [];
         content.addAll(
           // add all the content after the map
         snapshot.data.docs.map((QueryDocumentSnapshot<Object> adventure) {
@@ -103,7 +104,6 @@ class _FeedState extends State<Feed> {
           Map a = adventure.data();
           Widget content = null;
 
-          List<String> images = [];
 
           switch (a['type']) {
             case 'text':
@@ -113,30 +113,31 @@ class _FeedState extends State<Feed> {
                   children: [
                     Text(
                       a['title'],
-                      style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)
+                      style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold)
                     ),
                     Text(
                       a['text'],
-                      style: TextStyle(fontSize: 24.0)
+                      style: TextStyle(fontSize: 20.0)
                     )
                   ]
                 );
               } else {
                 content = Text(
                   a['text'],
-                  style: TextStyle(fontSize: 24.0)
+                  style: TextStyle(fontSize: 20.0)
                 );
               }
               break;
             case 'image':
               images.add(a['file']);
-              content = Image.network(a['file']);
+              debugPrint("adding img");
+              //content = Image.network(a['file']);
               break;
           }
 
 
-          if (false && images.length > 0 && (count == snapshot.data.docs.length || snapshot.data.docs[count + 1]['type'] == 'text')) {
-            debugPrint("Gridview with images $images");
+          if (images.length > 0 && (count + 1 == snapshot.data.docs.length || (count + 1 < snapshot.data.docs.length && snapshot.data.docs[count]['type'] == 'text'))) {
+            debugPrint("Gridview with  length ${images.length}, cnt: $count snapshot.data.docs.length: ${snapshot.data.docs.length}");
 
             /*content = StaggeredGridView.countBuilder(
               crossAxisCount: 1,
@@ -145,25 +146,36 @@ class _FeedState extends State<Feed> {
               staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
             );*/
 
-            //if (images.length % 2 == 1) {
-            //  var imgUrl = images.removeAt(0);
-            //  content = Column(children: [Image.network(imgUrl)]);
-            //}
+            List<Widget> imageList = [];
+            if (images.length % 2 == 1) {
+              var imgUrl = images.removeAt(0);
+              imageList.add(Image.network(imgUrl));
+            }
 
-            //content = GridView.count(
+            if (images.length > 0) {
+              imageList.add(GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                children: images.map((img) => FittedBox(
+                  child: Image.network(img),
+                  fit: BoxFit.cover,
+                  clipBehavior: Clip.hardEdge,
+                )).toList()
+              ));
+            }
+
+            content = Column(children: imageList);
+
+            //return GridView.count(
+            //  shrinkWrap: true,
+            //  physics: NeverScrollableScrollPhysics(),
             //  crossAxisCount: 2,
-            //  children: images.map((img) => Image.network(img)).toList()
+            //  // Generate 100 widgets that display their index in the List.
+            //  children: List.generate(3, (index) {
+            //    return Image.network("https://placekitten.com/640/480");
+            //  }),
             //);
-
-            content = Expanded(child: GridView.count(
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
-              crossAxisCount: 2,
-              // Generate 100 widgets that display their index in the List.
-              children: List.generate(1, (index) {
-                return Image.network("https://placekitten.com/640/480");
-              }),
-            ));
 
             images = [];
           }
