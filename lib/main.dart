@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             }
 
             // Otherwise, show something whilst waiting for initialization to complete
-            return Text("loading");
+            return CircularProgressIndicator();
           },
         );
   }

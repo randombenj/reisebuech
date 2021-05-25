@@ -27,52 +27,66 @@ class _AdventureState extends State<Adventure> {
           .snapshots(),
         builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            return Scaffold(
-              body: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      child: Text(
-                        snapshot.data['name'],
-                        style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold)
-                      ),
-                      padding: EdgeInsets.all(8.0).add(EdgeInsets.only(top: 48.0)),
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+              break;
+              default:
+                  // Completed with error
+                  if (snapshot.hasError) {
+                    return Text("soawii, somethin wned wong :(");
+                  }
+
+                  return Scaffold(
+                    body: SingleChildScrollView(
+                      child: Container(
+                        child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            child: Text(
+                              snapshot.data['name'],
+                              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold)
+                            ),
+                            padding: EdgeInsets.all(8.0).add(EdgeInsets.only(top: 48.0)),
+                          ),
+                          Padding(
+                            child: Divider(
+                              color: Color(snapshot.data['color']),
+                              thickness: 5.0,
+                            ),
+                            padding: EdgeInsets.only(right: 300, left: 10, bottom: 24),
+                          ),
+                          Feed(widget.adventure)
+                        ],
+                      )
+                    )),
+                    floatingActionButton: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        FloatingActionButton(
+                          heroTag: "camera",
+                          child: Icon(Icons.camera),
+                          onPressed: () {
+                            pickImage(context);
+                          },
+                        ),
+                        FloatingActionButton(
+                          heroTag: "text",
+                          child: Icon(Icons.text_fields),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddText(widget.adventure)),
+                            );
+                          },
+                        )
+                      ],
                     ),
-                    Padding(
-                      child: Divider(
-                        color: Color(snapshot.data['color']),
-                        thickness: 5.0,
-                      ),
-                      padding: EdgeInsets.only(right: 300, left: 10, bottom: 24),
-                    ),
-                    Feed(widget.adventure)
-                  ],
-                )
-              )),
-              floatingActionButton: Row(
-                textDirection: TextDirection.rtl,
-                children: [
-                  FloatingActionButton(
-                    child: Icon(Icons.camera),
-                    onPressed: () {
-                      pickImage(context);
-                    },
-                  ),
-                  FloatingActionButton(
-                    child: Icon(Icons.text_fields),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddText(widget.adventure)),
-                      );
-                    },
-                  )
-                ],
-              ),
-            );
+                  );
+            }
         });
   }
 

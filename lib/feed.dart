@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:latlong/latlong.dart' as latlong;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,6 +38,14 @@ class _FeedState extends State<Feed> {
       stream: widget.adventure.collection('posts').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
+        if (snapshot.connectionState == ConnectionState.none || snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.error != null) {
+          return Text("Ooooops something went wrong");
+        }
+
         List<latlong.LatLng> locations = snapshot.data.docs
           .where((p) => p["type"] == "image")
           .where((p) => p["lat"] > 0).map((QueryDocumentSnapshot<Object> adventure) {
@@ -64,77 +74,111 @@ class _FeedState extends State<Feed> {
         if (locations.length > 0) {
           content.add(
             Container(
-              height: (MediaQuery.of(context).size.height / 2),
-              child: Positioned(
-                left: 0.0,
-                child: Container(
-                  height: (MediaQuery.of(context).size.height),
-                  width: (MediaQuery.of(context).size.width),
-                  child: FlutterMap(
-                    options: MapOptions(
-                      center: center,
-                      zoom: 8.0,
-                    ),
-                    layers: [
-                      TileLayerOptions(
-                        urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-                        subdomains: ['a', 'b', 'c']
-                      ),
-                      MarkerLayerOptions(
-                        markers: mapMarker,
-                      ),
-                    ],
-                  ),
+              height: 400.0,
+              width: (MediaQuery.of(context).size.width),
+              child: FlutterMap(
+                options: MapOptions(
+                  center: center,
+                  zoom: 8.0,
                 ),
+                layers: [
+                  TileLayerOptions(
+                    urlTemplate: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+                    subdomains: ['a', 'b', 'c']
+                  ),
+                  MarkerLayerOptions(
+                    markers: mapMarker,
+                  ),
+                ],
               ),
-            )
+            ),
           );
         }
 
+        int count = 0;
         content.addAll(
           // add all the content after the map
-          snapshot.data.docs.map((QueryDocumentSnapshot<Object> adventure) {
-            Map a = adventure.data();
-            Widget content = Text("");
-            switch (a['type']) {
-              case 'text':
-                if (a['title'] != "") {
-                  content = Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        a['title'],
-                        style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)
-                      ),
-                      Text(
-                        a['text'],
-                        style: TextStyle(fontSize: 24.0)
-                      )
-                    ]
-                  );
-                } else {
-                  content = Text(
-                    a['text'],
-                    style: TextStyle(fontSize: 24.0)
-                  );
-                }
-                break;
-              case 'image':
-                content = Image.network(a['file']);
-                break;
-              break;
-            }
-            return Padding(
-              padding: EdgeInsets.all(8.0),
-              child: content// Text(a['type'])
-            );
-          }).toList()
-        );
+        snapshot.data.docs.map((QueryDocumentSnapshot<Object> adventure) {
+          count++;
+          Map a = adventure.data();
+          Widget content = null;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: content,
-        );
-      });
+          List<String> images = [];
+
+          switch (a['type']) {
+            case 'text':
+              if (a['title'] != "") {
+                content = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      a['title'],
+                      style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)
+                    ),
+                    Text(
+                      a['text'],
+                      style: TextStyle(fontSize: 24.0)
+                    )
+                  ]
+                );
+              } else {
+                content = Text(
+                  a['text'],
+                  style: TextStyle(fontSize: 24.0)
+                );
+              }
+              break;
+            case 'image':
+              images.add(a['file']);
+              content = Image.network(a['file']);
+              break;
+          }
+
+
+          if (false && images.length > 0 && (count == snapshot.data.docs.length || snapshot.data.docs[count + 1]['type'] == 'text')) {
+            debugPrint("Gridview with images $images");
+
+            /*content = StaggeredGridView.countBuilder(
+              crossAxisCount: 1,
+              itemCount: images.length,
+              itemBuilder: (BuildContext context, int index) => Image.network(images[index]),
+              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+            );*/
+
+            //if (images.length % 2 == 1) {
+            //  var imgUrl = images.removeAt(0);
+            //  content = Column(children: [Image.network(imgUrl)]);
+            //}
+
+            //content = GridView.count(
+            //  crossAxisCount: 2,
+            //  children: images.map((img) => Image.network(img)).toList()
+            //);
+
+            content = Expanded(child: GridView.count(
+              // Create a grid with 2 columns. If you change the scrollDirection to
+              // horizontal, this produces 2 rows.
+              crossAxisCount: 2,
+              // Generate 100 widgets that display their index in the List.
+              children: List.generate(1, (index) {
+                return Image.network("https://placekitten.com/640/480");
+              }),
+            ));
+
+            images = [];
+          }
+
+          return Padding(
+            padding: EdgeInsets.all(8.0),
+            child: content// Text(a['type'])
+          );
+        }).toList()
+      );
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: content,
+      );
+    });
   }
 }

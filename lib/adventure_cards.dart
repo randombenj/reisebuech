@@ -17,6 +17,7 @@ class _AdventureCardsState extends State<AdventureCards> {
     return StreamBuilder<QuerySnapshot>(
         stream: _adventuresStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.data == null) return CircularProgressIndicator();
           return new Container(
             child: Column(
               children: snapshot.data.docs
