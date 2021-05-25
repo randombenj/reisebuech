@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Container(
+              /*Container(
                   height: (MediaQuery.of(context).size.height),
                   child: new Stack(
                   children: <Widget>[
@@ -158,9 +158,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-              ),
+              ),*/
               AdventureCards(),
-              
+
             ],
           ),
         ),

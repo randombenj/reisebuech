@@ -30,26 +30,34 @@ class _AdventureCardsState extends State<AdventureCards> {
                             builder: (context) => Adventure(adventure.reference)),
                       );
                     },
-                    child: Card(
-                      color: Color(a['color']),
+                    child: Padding(padding: EdgeInsets.all(8.0), child: Card(
                       clipBehavior: Clip.antiAlias,
                       child: Column(
                         children: [
                           ListTile(
-                            title: Text(a['name'],
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(a['name'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0), textAlign: TextAlign.right),
+                                Padding(
+                                  child: Divider(
+                                    color: Color(a['color']),
+                                    thickness: 3.0,
+                                  ),
+                                  padding: EdgeInsets.only(right: 300),
+                                )
+                              ],
+                            ),
                             subtitle: Text(
                               DateFormat('dd.MM.yyyy').format((a['start']as Timestamp).toDate()) + " - " +DateFormat('dd.MM.yyyy').format((a['end']as Timestamp).toDate()),
-                             
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6)),
+                              color: Colors.black.withOpacity(0.6)),
                             ),
                           ),
-                          Image.network(
-                              "https://www.auslandsjob.de/wp-content/uploads/england-auslandsjob.jpg"),
+                          Image.network("https://www.auslandsjob.de/wp-content/uploads/england-auslandsjob.jpg"),
                         ],
                       ),
-                    ));
+                    )));
               }).toList(),
             ),
           );

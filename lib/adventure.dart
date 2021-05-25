@@ -31,13 +31,23 @@ class _AdventureState extends State<Adventure> {
               body: SingleChildScrollView(
                 child: Container(
                   child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      child: Text(snapshot.data['name'],
-                          style: TextStyle(fontSize: 50)),
-                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        snapshot.data['name'],
+                        style: TextStyle(fontSize: 50)
+                      ),
+                      padding: EdgeInsets.all(8.0).add(EdgeInsets.only(top: 48.0)),
                     ),
-                    Feed(widget.adventure),
+                    Padding(
+                      child: Divider(
+                        color: Color(snapshot.data['color']),
+                        thickness: 5.0,
+                      ),
+                      padding: EdgeInsets.only(right: 300, left: 10, bottom: 24),
+                    ),
+                    Feed(widget.adventure)
                   ],
                 )
               )),

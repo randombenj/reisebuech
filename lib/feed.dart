@@ -18,22 +18,25 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: widget.adventure.collection('posts').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: widget.adventure.collection('posts').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
-          List<Marker> mapMarker = snapshot.data.docs
-            .where((p) => p["type"] == "image")
-            .where((p) => p["lat"] >= 0).map((QueryDocumentSnapshot<Object> adventure) {
-              Map a = adventure.data();
-              return Marker(
-                width: 40,
-                height: 40,
-                point: latlong.LatLng(a["lat"], a["lng"]),
-                builder: (ctx) => Container(child: Icon(Icons.place, color: Colors.red))
-              );
-            }).toList();
+        List<Marker> mapMarker = snapshot.data.docs
+          .where((p) => p["type"] == "image")
+          .where((p) => p["lat"] >= 0).map((QueryDocumentSnapshot<Object> adventure) {
+            Map a = adventure.data();
+            return Marker(
+              width: 40,
+              height: 40,
+              point: latlong.LatLng(a["lat"], a["lng"]),
+              builder: (ctx) => Container(child: Icon(Icons.place, color: Colors.red))
+            );
+          }).toList();
 
-          List<Widget> content = [
+        List<Widget> content = [];
+
+        if (mapMarker.length > 0) {
+          content.add(
             Container(
               height: (MediaQuery.of(context).size.height / 2),
               child: Positioned(
@@ -59,26 +62,36 @@ class _FeedState extends State<Feed> {
                 ),
               ),
             )
-          ];
+          );
+        }
 
-          content.addAll(
-            // add all the content after the map
-            snapshot.data.docs.map((QueryDocumentSnapshot<Object> adventure) {
-              Map a = adventure.data();
-              switch (a['type']){
-                case 'text':
-                  return Text(a['text']);
-                case 'image':
-                  return  Image.network(a['file']);
+        content.addAll(
+          // add all the content after the map
+          snapshot.data.docs.map((QueryDocumentSnapshot<Object> adventure) {
+            Map a = adventure.data();
+            Widget content = Text("");
+            switch (a['type']) {
+              case 'text':
+                content = Text(
+                  a['text'],
+                  style: TextStyle(fontSize: 24.0));
                 break;
-              }
-              return Row(children: [Text(a['type'])]);
-            }).toList()
-          );
+              case 'image':
+                content = Image.network(a['file']);
+                break;
+              break;
+            }
+            return Padding(
+              padding: EdgeInsets.all(8.0),
+              child: content// Text(a['type'])
+            );
+          }).toList()
+        );
 
-          return Column(
-            children: content,
-          );
-        });
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: content,
+        );
+      });
   }
 }
