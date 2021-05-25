@@ -58,7 +58,7 @@ class _AdventureState extends State<Adventure> {
                             ),
                             padding: EdgeInsets.only(right: 300, left: 10, bottom: 24),
                           ),
-                          Feed(widget.adventure)
+                          Feed(widget.adventure, Color(snapshot.data['color']))
                         ],
                       )
                     )),

@@ -104,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              Image.asset("assets/adventure.png"),
               /*Container(
                   height: (MediaQuery.of(context).size.height),
                   child: new Stack(

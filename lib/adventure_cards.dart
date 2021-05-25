@@ -23,6 +23,7 @@ class _AdventureCardsState extends State<AdventureCards> {
               children: snapshot.data.docs
                   .map((QueryDocumentSnapshot<Object> adventure) {
                 Map a = adventure.data();
+
                 return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -55,7 +56,21 @@ class _AdventureCardsState extends State<AdventureCards> {
                               color: Colors.black.withOpacity(0.6)),
                             ),
                           ),
-                          Image.network("https://www.auslandsjob.de/wp-content/uploads/england-auslandsjob.jpg"),
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                              .collection('adventures')
+                              .doc(adventure.id)
+                              .collection('posts')
+                              .where("type", isEqualTo: "image")
+                              .limit(1)
+                              .snapshots(),
+                            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.data == null || (snapshot.data != null && snapshot.data.docs.length == 0)) {
+                                debugPrint("Length ${snapshot.data.docs.length}");
+                                return Column();
+                              }
+                              return Image.network(snapshot.data.docs[0]['file']);
+                            })
                         ],
                       ),
                     )));

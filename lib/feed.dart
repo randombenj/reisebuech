@@ -14,7 +14,8 @@ class Feed extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _FeedState();
   DocumentReference<Object> adventure;
-  Feed(this.adventure);
+  Color color;
+  Feed(this.adventure, this.color);
 }
 
 class _FeedState extends State<Feed> {
@@ -74,7 +75,7 @@ class _FeedState extends State<Feed> {
         if (locations.length > 0) {
           content.add(
             Container(
-              height: 400.0,
+              height: 200.0,
               width: (MediaQuery.of(context).size.width),
               child: FlutterMap(
                 options: MapOptions(
@@ -113,7 +114,7 @@ class _FeedState extends State<Feed> {
                   children: [
                     Text(
                       a['title'],
-                      style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold)
+                      style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: widget.color)
                     ),
                     Text(
                       a['text'],
@@ -154,6 +155,7 @@ class _FeedState extends State<Feed> {
 
             if (images.length > 0) {
               imageList.add(GridView.count(
+                padding: EdgeInsets.all(0),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
