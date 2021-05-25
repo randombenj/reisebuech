@@ -36,7 +36,7 @@ class _AdventureState extends State<Adventure> {
                     Padding(
                       child: Text(
                         snapshot.data['name'],
-                        style: TextStyle(fontSize: 50)
+                        style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold)
                       ),
                       padding: EdgeInsets.all(8.0).add(EdgeInsets.only(top: 48.0)),
                     ),
