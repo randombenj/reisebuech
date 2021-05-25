@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:latlong/latlong.dart' as latlong;
@@ -131,8 +132,6 @@ class _FeedState extends State<Feed> {
               break;
             case 'image':
               images.add(a['file']);
-              debugPrint("adding img");
-              //content = Image.network(a['file']);
               break;
           }
 
@@ -140,17 +139,17 @@ class _FeedState extends State<Feed> {
           if (images.length > 0 && (count + 1 == snapshot.data.docs.length || (count + 1 < snapshot.data.docs.length && snapshot.data.docs[count]['type'] == 'text'))) {
             debugPrint("Gridview with  length ${images.length}, cnt: $count snapshot.data.docs.length: ${snapshot.data.docs.length}");
 
-            /*content = StaggeredGridView.countBuilder(
-              crossAxisCount: 1,
-              itemCount: images.length,
-              itemBuilder: (BuildContext context, int index) => Image.network(images[index]),
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-            );*/
 
             List<Widget> imageList = [];
             if (images.length % 2 == 1) {
               var imgUrl = images.removeAt(0);
-              imageList.add(Image.network(imgUrl));
+              imageList.add(
+                CachedNetworkImage(
+                  imageUrl: imgUrl,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                )
+              );
             }
 
             if (images.length > 0) {
@@ -160,7 +159,11 @@ class _FeedState extends State<Feed> {
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
                 children: images.map((img) => FittedBox(
-                  child: Image.network(img),
+                  child: CachedNetworkImage(
+                    imageUrl: img,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                   fit: BoxFit.cover,
                   clipBehavior: Clip.hardEdge,
                 )).toList()
@@ -168,17 +171,6 @@ class _FeedState extends State<Feed> {
             }
 
             content = Column(children: imageList);
-
-            //return GridView.count(
-            //  shrinkWrap: true,
-            //  physics: NeverScrollableScrollPhysics(),
-            //  crossAxisCount: 2,
-            //  // Generate 100 widgets that display their index in the List.
-            //  children: List.generate(3, (index) {
-            //    return Image.network("https://placekitten.com/640/480");
-            //  }),
-            //);
-
             images = [];
           }
 

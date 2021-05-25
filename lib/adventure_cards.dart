@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -68,7 +69,11 @@ class _AdventureCardsState extends State<AdventureCards> {
                               if (snapshot.data == null || (snapshot.data != null && snapshot.data.docs.length == 0)) {
                                 return Column();
                               }
-                              return Image.network(snapshot.data.docs[0]['file']);
+                              return CachedNetworkImage(
+                                imageUrl: snapshot.data.docs[0]['file'],
+                                placeholder: (context, url) => CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
+                              );
                             })
                         ],
                       ),
