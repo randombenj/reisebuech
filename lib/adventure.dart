@@ -22,71 +22,71 @@ class _AdventureState extends State<Adventure> {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-          .collection('adventures')
-          .doc(widget.adventure.id)
-          .snapshots(),
+            .collection('adventures')
+            .doc(widget.adventure.id)
+            .snapshots(),
         builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
               break;
-              default:
-                  // Completed with error
-                  if (snapshot.hasError) {
-                    return Text("soawii, somethin wned wong :(");
-                  }
+            default:
+              // Completed with error
+              if (snapshot.hasError) {
+                return Text("soawii, somethin wned wong :(");
+              }
 
-                  return Scaffold(
-                    body: SingleChildScrollView(
-                      child: Container(
+              return Scaffold(
+                body: SingleChildScrollView(
+                    child: Container(
                         child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            child: Text(
-                              snapshot.data['name'],
-                              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold)
-                            ),
-                            padding: EdgeInsets.all(8.0).add(EdgeInsets.only(top: 48.0)),
-                          ),
-                          Padding(
-                            child: Divider(
-                              color: Color(snapshot.data['color']),
-                              thickness: 5.0,
-                            ),
-                            padding: EdgeInsets.only(right: 300, left: 10, bottom: 24),
-                          ),
-                          Feed(widget.adventure, Color(snapshot.data['color']))
-                        ],
-                      )
-                    )),
-                    floatingActionButton: Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        FloatingActionButton(
-                          heroTag: "camera",
-                          child: Icon(Icons.camera),
-                          onPressed: () {
-                            pickImage(context);
-                          },
-                        ),
-                        FloatingActionButton(
-                          heroTag: "text",
-                          child: Icon(Icons.text_fields),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddText(widget.adventure)),
-                            );
-                          },
-                        )
-                      ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      child: Text(snapshot.data['name'],
+                          style: TextStyle(
+                              fontSize: 50, fontWeight: FontWeight.bold)),
+                      padding:
+                          EdgeInsets.all(8.0).add(EdgeInsets.only(top: 48.0)),
                     ),
-                  );
-            }
+                    Padding(
+                      child: Divider(
+                        color: Color(snapshot.data['color']),
+                        thickness: 5.0,
+                      ),
+                      padding:
+                          EdgeInsets.only(right: 300, left: 10, bottom: 24),
+                    ),
+                    Feed(widget.adventure, Color(snapshot.data['color']))
+                  ],
+                ))),
+                floatingActionButton: Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    FloatingActionButton(
+                      heroTag: "camera",
+                      child: Icon(Icons.camera),
+                      onPressed: () {
+                        pickImage(context);
+                      },
+                    ),
+                    FloatingActionButton(
+                      heroTag: "text",
+                      child: Icon(Icons.text_fields),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddText(widget.adventure)),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              );
+          }
         });
   }
 
@@ -106,7 +106,7 @@ class _AdventureState extends State<Adventure> {
   }
 
   Future addImageToDb(
-    Future<TaskSnapshot> image, AssetEntity originalFile) async {
+      Future<TaskSnapshot> image, AssetEntity originalFile) async {
     String url = await (await image).ref.getDownloadURL();
     LatLng ll = await originalFile.latlngAsync();
     widget.adventure.collection('posts').add({
@@ -115,7 +115,7 @@ class _AdventureState extends State<Adventure> {
       'original-name': originalFile.title,
       'lat': ll.latitude,
       'lng': ll.longitude,
-      'time': DateTime.now().toUtc()//originalFile.createDateTime.toUtc()
+      'time': DateTime.now().toUtc() //originalFile.createDateTime.toUtc()
     });
   }
 }

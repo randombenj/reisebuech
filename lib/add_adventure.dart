@@ -35,46 +35,51 @@ class _AddAdventureState extends State<AddAdventure> {
                 style:
                     TextStyle(fontSize: 20.0, height: 2.0, color: Colors.black),
               )),
-          Padding(child: Row(children: [
-            Text("Date of your adventure: "),
-            Text(dateText),
-            TextButton(
-              style: TextButton.styleFrom(primary: Colors.green),
-              onPressed: () {
-                showDateRangePicker(
-                        context: context,
-                        currentDate: DateTime.now(),
-                        initialDateRange: timeRange,
-                        lastDate: DateTime(2100),
-                        firstDate: DateTime(2000))
-                    .then((value) {
-                  if (value != null) {
-                    setState(() {
-                      setDateTime(value);
-                    });
-                  }
-                });
-              },
-              child: Text("change"),
-            )
-          ]), padding: EdgeInsets.only(left: 8.0, right: 8.0)),
-          Padding(child: Row(
-            children: [
-              Text("Color: "),
-              TextButton(
-                  style: TextButton.styleFrom(
-                      primary: color, backgroundColor: color),
+          Padding(
+              child: Row(children: [
+                Text("Date of your adventure: "),
+                Text(dateText),
+                TextButton(
+                  style: TextButton.styleFrom(primary: Colors.green),
                   onPressed: () {
-                    ColorPicker(onColorChanged: (value) {
-                      setState(() {
-                        color = value;
-                      });
-                    }).showPickerDialog(context);
+                    showDateRangePicker(
+                            context: context,
+                            currentDate: DateTime.now(),
+                            initialDateRange: timeRange,
+                            lastDate: DateTime(2100),
+                            firstDate: DateTime(2000))
+                        .then((value) {
+                      if (value != null) {
+                        setState(() {
+                          setDateTime(value);
+                        });
+                      }
+                    });
                   },
-                  child: Text("Change the color of your adventure!"))
-            ],
-          ), padding: EdgeInsets.only(left: 8.0, right: 8.0))
-        ],),
+                  child: Text("change"),
+                )
+              ]),
+              padding: EdgeInsets.only(left: 8.0, right: 8.0)),
+          Padding(
+              child: Row(
+                children: [
+                  Text("Color: "),
+                  TextButton(
+                      style: TextButton.styleFrom(
+                          primary: color, backgroundColor: color),
+                      onPressed: () {
+                        ColorPicker(onColorChanged: (value) {
+                          setState(() {
+                            color = value;
+                          });
+                        }).showPickerDialog(context);
+                      },
+                      child: Text("Change the color of your adventure!"))
+                ],
+              ),
+              padding: EdgeInsets.only(left: 8.0, right: 8.0))
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           adventures.add({

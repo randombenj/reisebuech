@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'adventure_cards.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -35,10 +36,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ReiseBuech',
       theme: ThemeData(
-         buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
-            accentColor: Colors.black,
-            primaryColor: Colors.black
-      ),
+          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
+          accentColor: Colors.black,
+          primaryColor: Colors.black),
       home: MyHomePage(title: 'Saletti Flutter'),
     );
   }
@@ -74,33 +74,31 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
-          // Initialize FlutterFire:
-          future: _initialization,
-          builder: (context, snapshot) {
-            // Check for errors
-            if (snapshot.hasError) {
-              return Text("soawii, somethin wned wong :(");
-            }
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return Text("soawii, somethin wned wong :(");
+        }
 
-            // Once complete, show your application
-            if (snapshot.connectionState == ConnectionState.done) {
-              return buildActualApp(context);
-            }
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return buildActualApp(context);
+        }
 
-            // Otherwise, show something whilst waiting for initialization to complete
-            return CircularProgressIndicator();
-          },
-        );
+        // Otherwise, show something whilst waiting for initialization to complete
+        return CircularProgressIndicator();
+      },
+    );
   }
 
-  Widget buildActualApp(BuildContext context)
-  {
+  Widget buildActualApp(BuildContext context) {
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.only(top: 24.0),
-        child:  SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -123,5 +121,3 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 }
-
-
