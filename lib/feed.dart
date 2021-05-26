@@ -132,8 +132,8 @@ class _FeedState extends State<Feed> {
             }
 
             if (images.length > 0 &&
-                (count + 1 == snapshot.data.docs.length ||
-                    (count + 1 < snapshot.data.docs.length &&
+                (count == snapshot.data.docs.length ||
+                    (count < snapshot.data.docs.length &&
                         snapshot.data.docs[count]['type'] == 'text'))) {
               debugPrint(
                   "Gridview with  length ${images.length}, cnt: $count snapshot.data.docs.length: ${snapshot.data.docs.length}");

@@ -76,7 +76,6 @@ class _AdventureCardsState extends State<AdventureCards> {
                                       .doc(adventure.id)
                                       .collection('posts')
                                       .where("type", isEqualTo: "image")
-                                      .limit(1)
                                       .snapshots(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -85,8 +84,22 @@ class _AdventureCardsState extends State<AdventureCards> {
                                             snapshot.data.docs.length == 0)) {
                                       return Column();
                                     }
+
+                                    var list = snapshot.data.docs
+                                        .where((a) => (a.data() as Map)
+                                            .containsKey('time'))
+                                        .toList();
+                                    list.sort((a, b) =>
+                                        a['time'].compareTo(b['time']));
+
+                                    if (list.length <= 0) {
+                                      return Column();
+                                    }
+                                    var data = list.first;
+
                                     return CachedNetworkImage(
-                                      imageUrl: snapshot.data.docs[0]['file'],
+                                      imageUrl: data[
+                                          'file'], // snapshot.data.docs[0]['file'],
                                       placeholder: (context, url) =>
                                           CircularProgressIndicator(),
                                       errorWidget: (context, url, error) =>
