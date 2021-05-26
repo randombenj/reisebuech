@@ -20,41 +20,43 @@ class _AddTextState extends State<AddText> {
         title: Text("Adventure Title"),
       ),
       body: Container(
-        child: Padding(child: Column(
-          children: [
-            Text("test"),
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(labelText: "Title (optional)"),
-            ),
-            TextField(
-              controller: textController,
-              textAlign: TextAlign.start,
-              textAlignVertical: TextAlignVertical.bottom,
-              maxLines: null,
-              decoration: InputDecoration(
-                  labelText: "Tell something about your adventure!",
-                  hintText: "Today I, ..."),
-              // style: TextStyle(height: 10.0),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(primary: Colors.green),
-              onPressed: () {
-                showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now()).then((value) {
-                      setState(() {
-                        date = value;
+          child: Padding(
+              child: Column(
+                children: [
+                  Text("test"),
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(labelText: "Title (optional)"),
+                  ),
+                  TextField(
+                    controller: textController,
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.bottom,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                        labelText: "Tell something about your adventure!",
+                        hintText: "Today I, ..."),
+                    // style: TextStyle(height: 10.0),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(primary: Colors.green),
+                    onPressed: () {
+                      showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now())
+                          .then((value) {
+                        setState(() {
+                          date = value;
+                        });
                       });
-                    });
-              },
-              child: Text("Date"),
-            )
-          ],
-        ),
-       padding: EdgeInsets.only(left: 8.0, right: 8.0))),
+                    },
+                    child: Text("Date"),
+                  )
+                ],
+              ),
+              padding: EdgeInsets.only(left: 8.0, right: 8.0))),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () {
