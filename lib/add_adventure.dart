@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 
+import 'adventure.dart';
+import 'main.dart';
+
 class AddAdventure extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _AddAdventureState();
@@ -87,11 +90,18 @@ class _AddAdventureState extends State<AddAdventure> {
             'start': timeRange.start.toUtc(),
             'end': timeRange.end.toUtc(),
             'color': color.value
-          });
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Adventure " + adventureController.text + " added!"),
-          ));
-          Navigator.pop(context);
+          }).then((adventure) {
+            Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Adventure(adventure)),
+                  ModalRoute.withName('/')
+                );
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Adventure " + adventureController.text + " added!"),
+            ));
         },
         tooltip: 'Save a new Adventure',
         child: Icon(Icons.save),
